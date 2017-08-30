@@ -1,0 +1,18 @@
+﻿<Page
+    x:Class="CameraStreamer.uwp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CameraStreamer.uwp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded"
+    >
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <HyperlinkButton Name="linkLabel1" Content="HyperlinkButton" HorizontalAlignment="Left" Margin="51,72,0,0" VerticalAlignment="Top" Click="linkLabel1_Click"/>
+        <CaptureElement Name="PreviewControl" Stretch="Uniform"/>
+        <Button Content="Start" HorizontalAlignment="Left" Margin="108,230,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <!-- can hide this: https://stackoverflow.com/questions/33375679/how-to-access-camera-frames-in-universal-windows-platform -->
+    </Grid>
+</Page>

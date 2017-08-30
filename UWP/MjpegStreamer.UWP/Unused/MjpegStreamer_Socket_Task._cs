@@ -1,0 +1,216 @@
+﻿// ImageStreamingServer.cs
+// UWP version by Aristotelis Chantzaras (arisxan@hol.gr) - 20170823
+// Original WinForms version by Ragheed Al-Tayeb (ragheedemail@gmail.com) - 20120423 - https://www.codeproject.com/Articles/371955/Motion-JPEG-Streaming-Server
+
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
+using Windows.Graphics.Imaging;
+using System.Threading.Tasks;
+using System.Threading;
+
+namespace Chantzaras.Media.Streaming.Mjpeg
+{
+
+    /// <summary>
+    /// Provides a streaming server that can be used to stream any images source
+    /// to any client.
+    /// </summary>
+    public class MjpegStreamer_Socket_Task : IDisposable, IImageStreamer
+    {
+        private Task _Task;
+        private List<Socket> _Clients;
+
+        private CancellationTokenSource tokenSource = new CancellationTokenSource();
+        private CancellationToken ct;
+
+        public MjpegStreamer_Socket_Task(IEnumerable<SoftwareBitmap> imagesSource)
+        {
+
+            _Clients = new List<Socket>();
+
+            this.ImagesSource = imagesSource;
+            this.Interval = 50;
+        }
+
+        /// <summary>
+        /// Gets or sets the source of images that will be streamed to the 
+        /// any connected client.
+        /// </summary>
+        public IEnumerable<SoftwareBitmap> ImagesSource { get; set; }
+
+        /// <summary>
+        /// Gets or sets the interval in milliseconds (or the delay time) between 
+        /// the each image and the other of the stream (the default is . 
+        /// </summary>
+        public int Interval { get; set; }
+
+        /// <summary>
+        /// Gets a collection of client sockets.
+        /// </summary>
+        public IEnumerable<Socket> Clients { get { return _Clients; } }
+
+        /// <summary>
+        /// Returns the status of the server. True means the server is currently 
+        /// running and ready to serve any client requests.
+        /// </summary>
+        public bool IsRunning { get { return (_Task != null && _Task.Status == TaskStatus.Running); } }
+
+        /// <summary>
+        /// Starts the server to accepts any new connections on the specified port.
+        /// </summary>
+        /// <param name="port"></param>
+        public void Start(int port)
+        {
+            lock (this)
+            {
+                ct = tokenSource.Token;
+                ActionItem.Schedule(ServerTask, port);
+            }
+
+        }
+
+        /// <summary>
+        /// Starts the server to accepts any new connections on the default port (8080).
+        /// </summary>
+        public void Start()
+        {
+            this.Start(8080);
+        }
+
+        public void Stop()
+        {
+
+            if (this.IsRunning)
+            {
+                try
+                {
+                    _Task.Wait(); //see https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/attached-and-detached-child-tasks
+                    tokenSource.Cancel(); //see https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/task-cancellation and https://stackoverflow.com/questions/4359910/is-it-possible-to-abort-a-task-like-aborting-a-thread-thread-abort-method
+                }
+                finally
+                {
+
+                    lock (_Clients)
+                    {
+                        
+                        foreach (var s in _Clients)
+                        {
+                            try
+                            {
+                                s.Dispose();
+                            }
+							catch(Exception e)
+							{
+								System.Diagnostics.Debug.WriteLine(e.Message);
+							}
+                        }
+                        _Clients.Clear();
+
+                    }
+
+                    _Task = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// This the main thread of the server that serves all the new 
+        /// connections from clients.
+        /// </summary>
+        /// <param name="state"></param>
+        private void ServerTask(object state)
+        {
+
+            try
+            {
+                Socket Server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+                Server.Bind(new IPEndPoint(IPAddress.Any,(int)state));
+                Server.Listen(10);
+
+                System.Diagnostics.Debug.WriteLine(string.Format("Server started on port {0}.", state));
+                
+                foreach (Socket client in Server.IncommingConnections(ct))
+                    ActionItem.Schedule(ClientTask, client);
+            
+            }
+            catch(Exception e)
+			{
+			    System.Diagnostics.Debug.WriteLine(e.Message);
+			}
+
+            this.Stop();
+        }
+
+        /// <summary>
+        /// Each client connection will be served by this thread.
+        /// </summary>
+        /// <param name="client"></param>
+        private void ClientTask(object client)
+        {
+
+            Socket socket = (Socket)client;
+
+            System.Diagnostics.Debug.WriteLine(string.Format("New client from {0}",socket.RemoteEndPoint.ToString()));
+
+            lock (_Clients)
+                _Clients.Add(socket);
+
+            try
+            {
+                using (MjpegWriter wr = new MjpegWriter(new NetworkStream(socket, true)))
+                {
+
+                    // Writes the response header to the client.
+                    wr.WriteHeader();
+
+                    // Streams the images from the source to the client.
+                    foreach (var imgStream in this.ImagesSource.JpegStreams())
+                    {
+                        if (this.Interval > 0)
+                            Task.Delay(this.Interval).Wait(); //see https://stackoverflow.com/questions/12641223/thread-sleep-replacement-in-net-for-windows-store
+
+                        wr.Write(imgStream);
+                    }
+
+                }
+            }
+            catch(Exception e)
+			{
+			    System.Diagnostics.Debug.WriteLine(e.Message);
+			}
+			finally
+            {
+                lock (_Clients)
+                    _Clients.Remove(socket);
+            }
+        }
+
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            this.Stop();
+        }
+
+        #endregion
+    }
+
+    static class SocketExtensions_Task
+    {
+
+        public static IEnumerable<Socket> IncommingConnections(this Socket server, CancellationToken ct)
+        {
+            while (true)
+            {
+                ct.ThrowIfCancellationRequested();
+                yield return server.Accept();
+            }
+        }
+
+    }
+
+}
