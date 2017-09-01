@@ -10,9 +10,17 @@ namespace ScreenStreamer
     public partial class MainForm : Form
     {
 
+        #region Constants
+
         const int port = 8080;
 
+        #endregion
+
+        #region Fields
+
         private MjpegStreamer_Socket_Thread _Server;
+
+        #endregion
 
         #region Initialization
 
