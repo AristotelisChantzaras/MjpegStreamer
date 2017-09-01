@@ -9,10 +9,12 @@ namespace ScreenStreamer
 {
     public partial class MainForm : Form
     {
-        //private DateTime time = DateTime.MinValue;
 
         const int port = 8080;
+
         private MjpegStreamer_Socket_Thread _Server;
+
+        #region Initialization
 
         public MainForm()
         {
@@ -20,10 +22,23 @@ namespace ScreenStreamer
             this.linkLabel1.Text = string.Format("http://{0}:{1}", Environment.MachineName, port);
         }
 
+        #endregion
+
+        #region Methods
+
+        public void StartServer()
+        {
+            _Server = new MjpegStreamer_Socket_Thread(ScreenCapture.Snapshots(600, 450, true));
+            _Server.Start(port);
+        }
+
+        #endregion
+
+        #region Events
+
         private void Form1_Load(object sender, EventArgs e)
         {
-            _Server = new MjpegStreamer_Socket_Thread(Chantzaras.Media.Capture.Screen.Snapshots(600, 450, true));
-            _Server.Start(port);
+            StartServer();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -36,6 +51,8 @@ namespace ScreenStreamer
         {
             System.Diagnostics.Process.Start(this.linkLabel1.Text);
         }
+
+        #endregion
 
     }
 

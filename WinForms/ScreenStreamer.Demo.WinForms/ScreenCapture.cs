@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace Chantzaras.Media.Capture
 {
 
-    static class Screen
+    static class ScreenCapture
     {
         // -------------------------------------------------
         // Developed By : Ragheed Al-Tayeb
@@ -15,7 +15,7 @@ namespace Chantzaras.Media.Capture
 
         public static IEnumerable<Image> Snapshots()
         {
-            return Screen.Snapshots(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height, true);
+            return Snapshots(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height, true);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Chantzaras.Media.Capture
 
             }
 
-            srcGraphics.Dispose(); //TODO: Unreachable code
+            srcGraphics.Dispose(); //TODO: Unreachable code (probably need to set some flag and when seen cleanup and exit loop)
             dstGraphics.Dispose();
 
             srcImage.Dispose();
