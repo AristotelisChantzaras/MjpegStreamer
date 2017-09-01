@@ -16,18 +16,43 @@ namespace CameraStreamer.uwp
     {
 
         const int port = 8080;
+
         private IImageStreamer _Server;
+
+        #region Initialization
 
         public MainPage()
         {
             this.InitializeComponent();
 
-            this.linkLabel1.Content = string.Format("http://{0}:{1}", Environment_MachineName(), port);
+            this.linkLabel1.Content = string.Format("http://{0}:{1}", GetLocalIp(), port);
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        #endregion
+
+        #region Methods
+
+        public static string GetMachineName() //see https://stackoverflow.com/questions/32876966/how-to-get-local-host-name-in-c-sharp-on-a-windows-10-universal-app
         {
-            //StartServer();
+            var hostNames = NetworkInformation.GetHostNames();
+            return hostNames.FirstOrDefault(name => name.Type == HostNameType.DomainName)?.DisplayName ?? "???";
+        }
+
+        public static string GetLocalIp(HostNameType hostNameType = HostNameType.Ipv4) //https://stackoverflow.com/questions/33770429/how-do-i-find-the-local-ip-address-on-a-win-10-uwp-project
+        {
+            var icp = NetworkInformation.GetInternetConnectionProfile();
+
+            if (icp?.NetworkAdapter == null) return null;
+            var hostname =
+                NetworkInformation.GetHostNames()
+                    .FirstOrDefault(
+                        hn =>
+                            hn.Type == hostNameType &&
+                            hn.IPInformation?.NetworkAdapter != null && 
+                            hn.IPInformation.NetworkAdapter.NetworkAdapterId == icp.NetworkAdapter.NetworkAdapterId);
+
+            // the ip address
+            return hostname?.CanonicalName;
         }
 
         private void StartServer()
@@ -39,21 +64,31 @@ namespace CameraStreamer.uwp
             _Server.Start(port);
         }
 
+
+
+        #endregion
+
+        #region Events
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            StartServer();
+        }
+
         private void linkLabel1_Click(System.Object sender, RoutedEventArgs e)
         {
             //System.Diagnostics.Process.Start(this.linkLabel1.Content);
         }
 
-        private string Environment_MachineName() //see https://stackoverflow.com/questions/32876966/how-to-get-local-host-name-in-c-sharp-on-a-windows-10-universal-app
-        {
-            var hostNames = NetworkInformation.GetHostNames();
-            return hostNames.FirstOrDefault(name => name.Type == HostNameType.Ipv4)?.DisplayName ?? "???"; //use DomainName to get machine name in local network
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        /*
+        private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             StartServer();
         }
+        */
+
+        #endregion
+
     }
 
 }

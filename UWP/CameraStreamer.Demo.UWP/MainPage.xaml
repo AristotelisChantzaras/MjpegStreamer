@@ -11,8 +11,10 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <HyperlinkButton Name="linkLabel1" Content="HyperlinkButton" HorizontalAlignment="Left" Margin="51,72,0,0" VerticalAlignment="Top" Click="linkLabel1_Click"/>
+
         <CaptureElement Name="PreviewControl" Stretch="Uniform"/>
-        <Button Content="Start" HorizontalAlignment="Left" Margin="108,230,0,0" VerticalAlignment="Top" Click="Button_Click"/>
         <!-- can hide this: https://stackoverflow.com/questions/33375679/how-to-access-camera-frames-in-universal-windows-platform -->
+
+        <!-- <Button Content="btnStart" HorizontalAlignment="Left" Margin="108,230,0,0" VerticalAlignment="Top" Click="btnStart_Click"/> -->
     </Grid>
 </Page>
