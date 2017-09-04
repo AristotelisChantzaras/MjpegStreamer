@@ -1,5 +1,5 @@
-﻿// ImageStreamingServer.cs
-// UWP version by Aristotelis Chantzaras (arisxan@hol.gr) - 20170823
+﻿// MjpegStreamer.cs
+// UWP version by Aristotelis Chantzaras (arisxan@hol.gr) - 20170904
 // Original WinForms version by Ragheed Al-Tayeb (ragheedemail@gmail.com) - 20120423 - https://www.codeproject.com/Articles/371955/Motion-JPEG-Streaming-Server
 
 using System;
@@ -20,7 +20,7 @@ namespace Chantzaras.Media.Streaming.Mjpeg
     /// Provides a streaming server that can be used to stream any images source
     /// to any client.
     /// </summary>
-    public class MjpegStreamer_StreamSocket_Task : IDisposable, IImageStreamer
+    public class MjpegStreamer : IDisposable, IImageStreamer
     {
         private Task _Task;
         private List<StreamSocket> _Clients;
@@ -28,7 +28,7 @@ namespace Chantzaras.Media.Streaming.Mjpeg
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
         private CancellationToken ct;
 
-        public MjpegStreamer_StreamSocket_Task(IEnumerable<SoftwareBitmap> imagesSource)
+        public MjpegStreamer(IEnumerable<SoftwareBitmap> imagesSource)
         {
 
             _Clients = new List<StreamSocket>();
@@ -117,32 +117,6 @@ namespace Chantzaras.Media.Streaming.Mjpeg
                 }
             }
         }
-
-/*
-        private static NetworkAdapter GetIPadapter() //see https://stackoverflow.com/questions/32672520/how-to-get-unicast-dns-and-gateway-address-in-uwp
-        {
-            var icp = NetworkInformation.GetInternetConnectionProfile();
-            if (icp != null && icp.NetworkAdapter != null && icp.NetworkAdapter.NetworkAdapterId != null)
-            {
-                var name = icp.ProfileName;
-
-                var hostnames = NetworkInformation.GetHostNames();
-
-                foreach (var hn in hostnames)
-                {
-                    if (hn.IPInformation != null &&
-                        hn.IPInformation.NetworkAdapter != null &&
-                        hn.IPInformation.NetworkAdapter.NetworkAdapterId != null &&
-                        hn.IPInformation.NetworkAdapter.NetworkAdapterId == icp.NetworkAdapter.NetworkAdapterId &&
-                        (hn.Type == HostNameType.Ipv4 || hn.Type == HostNameType.Ipv6))
-                    {
-                        return hn.IPInformation.NetworkAdapter;
-                    }
-                }
-            }
-            return null;
-        }
-*/
 
         /// <summary>
         /// This the main thread of the server that serves all the new 
