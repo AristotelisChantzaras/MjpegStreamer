@@ -7,7 +7,6 @@ using Windows.Media;
 using Windows.Media.Capture;
 using System;
 using Windows.Media.MediaProperties;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Core;
 

@@ -108,10 +108,7 @@
   <ItemGroup>
     <Compile Include="ActionItem.cs" />
     <Compile Include="IImageStreamer.cs" />
-    <Compile Include="MjpegStreamer_StreamSocket_Task.cs" />
-    <None Include="Unused\MjpegStreamer_Socket_Task._cs" />
-    <None Include="Unused\DedicatedThreadPool._cs" />
-    <None Include="Unused\MjpegStreamer_Socket_Thread._cs" />
+    <Compile Include="MjpegStreamer.cs" />
     <Compile Include="MjpegWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JpegStreaming.cs" />

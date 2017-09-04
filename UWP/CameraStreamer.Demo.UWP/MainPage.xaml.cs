@@ -1,10 +1,8 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-using Chantzaras.Media.Capture;
-using Chantzaras.Media.Streaming.Mjpeg;
-
 using MjpegStreamerTest.uwp;
+using Chantzaras.Media.Streaming.CameraCapture;
 
 namespace CameraStreamer.uwp
 {
@@ -21,7 +19,7 @@ namespace CameraStreamer.uwp
 
         #region Fields
 
-        private IImageStreamer _Server;
+        private CameraCaptureStreamer _Server;
 
         #endregion
 
@@ -35,19 +33,17 @@ namespace CameraStreamer.uwp
         }
 
         #endregion
-
+        
         #region Methods
 
         private void StartServer()
         {
-            _Server = new MjpegStreamer_StreamSocket_Task(Camera.Snapshots(PreviewControl, 640, 480))
+            _Server = new CameraCaptureStreamer(PreviewControl, 640, 480)
             {
                 Interval = 500 //change this value if seeing too much lag (make sure it's not very small, try 100-500)
             };
             _Server.Start(port);
         }
-
-
 
         #endregion
 
