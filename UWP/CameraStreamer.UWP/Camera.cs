@@ -52,12 +52,18 @@ namespace Chantzaras.Media.Capture
             System.Diagnostics.Debug.WriteLine("Failed to capture");
         }
 
-        public static SoftwareBitmap CameraImage(CaptureElement previewControl, int width, int height) //sample from https://docs.microsoft.com/en-us/windows/uwp/audio-video-camera/get-a-preview-frame
+        public static SoftwareBitmap CameraImage(CaptureElement previewControl, int width = 0, int height = 0) //sample from https://docs.microsoft.com/en-us/windows/uwp/audio-video-camera/get-a-preview-frame
         {
             while (true)
             {
                 try
                 {
+                    if (width == 0)
+                        width = (int)previewControl.Width;
+
+                    if (height == 0)
+                        height = (int)previewControl.Height;
+
                     // Create a video frame in the desired format for the preview frame
                     VideoFrame videoFrame = new VideoFrame(BitmapPixelFormat.Bgra8, width, height);
                     VideoFrame previewFrame = _mediaCapture.GetPreviewFrameAsync(videoFrame).GetAwaiter().GetResult();
