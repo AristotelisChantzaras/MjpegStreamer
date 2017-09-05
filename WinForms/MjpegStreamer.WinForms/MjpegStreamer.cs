@@ -18,13 +18,13 @@ namespace Chantzaras.Media.Streaming.Mjpeg
     /// Provides a streaming server that can be used to stream any images source
     /// to any client.
     /// </summary>
-    public class MjpegStreamer_Socket_Thread : IDisposable, IImageStreamer
+    public class MjpegStreamer : IDisposable, IImageStreamer
     {
 
         private List<Socket> _Clients;
         private Thread _Thread;
 
-        public MjpegStreamer_Socket_Thread(IEnumerable<Image> imagesSource)
+        public MjpegStreamer(IEnumerable<Image> imagesSource)
         {
 
             _Clients = new List<Socket>();

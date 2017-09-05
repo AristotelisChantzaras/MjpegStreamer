@@ -18,7 +18,7 @@ namespace ScreenStreamer
 
         #region Fields
 
-        private MjpegStreamer_Socket_Thread _Server;
+        private MjpegStreamer _Server;
 
         #endregion
 
@@ -36,7 +36,7 @@ namespace ScreenStreamer
 
         public void StartServer()
         {
-            _Server = new MjpegStreamer_Socket_Thread(ScreenCapture.Snapshots(600, 450, true));
+            _Server = new MjpegStreamer(ScreenCapture.Snapshots(600, 450, true));
             _Server.Start(port);
         }
 

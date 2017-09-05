@@ -73,7 +73,7 @@
     <Compile Include="JpegStreaming.cs" />
     <Compile Include="MjpegWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MjpegStreamer_Socket_Thread.cs" />
+    <Compile Include="MjpegStreamer.cs" />
     <Compile Include="IImageStreamer.cs" />
   </ItemGroup>
   <ItemGroup>
