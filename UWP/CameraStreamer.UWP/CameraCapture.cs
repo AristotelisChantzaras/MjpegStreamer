@@ -47,7 +47,10 @@ namespace Chantzaras.Media.Capture
                     //cleanup
                     _mediaCapture.StopPreviewAsync().GetAwaiter().GetResult();
                     _mediaCapture = null;
-                    previewControl.Source = null;
+                    previewControl.Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        previewControl.Source = null;
+                    }).GetAwaiter().GetResult();
 
                     yield break;
                 }
