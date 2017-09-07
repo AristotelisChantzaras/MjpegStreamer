@@ -1,4 +1,8 @@
-﻿using Chantzaras.Media.Streaming.Mjpeg;
+﻿//Project: ScreenCaptureStreamer (WinForms)
+//Filename: ScreenCapture.cs
+//Version: 20170907
+
+using Chantzaras.Media.Streaming.Mjpeg;
 using Chantzaras.Media.Capture;
 
 namespace Chantzaras.Media.Streaming.Screencast

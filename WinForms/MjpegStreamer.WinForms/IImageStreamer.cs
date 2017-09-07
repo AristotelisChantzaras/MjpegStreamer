@@ -1,5 +1,6 @@
 ﻿//Project: MjpegStreamer.WinForms
 //Filename: IImageStreamer.cs
+//Version: 20170907
 
 using System.Collections.Generic;
 using System.Drawing;

@@ -1,5 +1,6 @@
-﻿//Project: ScreenStreamer (WinForms)
+﻿//Project: ScreenCaptureStreamer (WinForms)
 //Filename: ScreenCapture.cs
+//Version: 20170907
 
 using System;
 using System.Collections.Generic;

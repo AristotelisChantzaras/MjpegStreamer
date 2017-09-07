@@ -1,5 +1,6 @@
 ﻿//Project: MjpegStreamer.UWP
 //Filename: JpegStreaming.cs
+//Version: 20170907
 
 using System.Collections.Generic;
 using System.IO;

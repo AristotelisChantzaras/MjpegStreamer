@@ -1,5 +1,6 @@
 ﻿//Project: CameraCaptureStreamer.UWP
 //Filename: CameraCapture.cs
+//Version: 20170907
 
 using System.Collections.Generic;
 using Windows.Graphics.Imaging;

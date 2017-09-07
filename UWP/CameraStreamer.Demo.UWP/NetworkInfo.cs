@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿//Project: CameraStreamer (UWP)
+//Filename: NetworkInfo.cs
+//Version: 20170907
+
+using System.Linq;
 using Windows.Networking;
 using Windows.Networking.Connectivity;
 

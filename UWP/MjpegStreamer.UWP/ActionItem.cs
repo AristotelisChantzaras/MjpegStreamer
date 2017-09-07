@@ -1,5 +1,6 @@
 ﻿//Project: MjpegStreamer.UWP
 //Filename: ActionItem.cs
+//Version: 20170907
 
 using System;
 using System.Threading.Tasks;

@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Project: ScreenCaptureStreamer (WinForms)
+//Filename: ScreenCapture.csusing System;
+//Version: 20170907
+
+using System;
 using System.Linq;
 using System.Windows.Forms;
 

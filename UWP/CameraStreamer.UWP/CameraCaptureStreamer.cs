@@ -1,5 +1,6 @@
 ﻿//Project: CameraCaptureStreamer.UWP
 //Filename: CameraCaptureStreamer.cs
+//Version: 20170907
 
 using Windows.UI.Xaml.Controls;
 

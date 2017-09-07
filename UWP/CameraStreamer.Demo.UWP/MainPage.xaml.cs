@@ -1,4 +1,8 @@
-﻿using Windows.UI.Xaml;
+﻿//Project: CameraStreamer (UWP)
+//Filename: MainPage.cs
+//Version: 20170907
+
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 using MjpegStreamerTest.uwp;
