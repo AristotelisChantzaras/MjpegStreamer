@@ -1,4 +1,7 @@
-﻿using System;
+﻿//Project: MjpegStreamer.UWP
+//Filename: ActionItem.cs
+
+using System;
 using System.Threading.Tasks;
 
 namespace Chantzaras.Tasks

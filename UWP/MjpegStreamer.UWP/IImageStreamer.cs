@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿//Project: MjpegStreamer.UWP
+//Filename: IImageStreamer.cs
+
+using System.Collections.Generic;
 using Windows.Graphics.Imaging;
 using Windows.Networking.Sockets;
 
