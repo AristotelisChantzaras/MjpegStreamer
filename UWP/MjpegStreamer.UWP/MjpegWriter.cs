@@ -1,6 +1,5 @@
-﻿// MjpegWriter.cs
-// UWP version by Aristotelis Chantzaras (arisxan@hol.gr) - 20170821
-// Original WinForms version by Ragheed Al-Tayeb (ragheedemail@gmail.com) - 20120423 - https://www.codeproject.com/Articles/371955/Motion-JPEG-Streaming-Server
+﻿//Project: MjpegStreamer.UWP
+//Filename: MjpegWriter.cs
 
 using System;
 using System.Text;

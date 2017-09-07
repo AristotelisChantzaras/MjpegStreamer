@@ -7,7 +7,7 @@
     <ProjectGuid>{11F5DCBE-2C2D-4BBE-B6DE-A28EBC0CC227}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CameraStreamer.uwp</RootNamespace>
+    <RootNamespace>Chantzaras.Media.Streaming.CameraCapture</RootNamespace>
     <AssemblyName>CameraStreamer.uwp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
@@ -106,7 +106,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Camera.cs" />
+    <Compile Include="CameraCapture.cs" />
     <Compile Include="CameraCaptureStreamer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\MjpegStreamer.uwp.rd.xml" />

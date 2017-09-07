@@ -1,6 +1,5 @@
-﻿// MjpegStreamer.cs
-// UWP version by Aristotelis Chantzaras (arisxan@hol.gr) - 20170904
-// Original WinForms version by Ragheed Al-Tayeb (ragheedemail@gmail.com) - 20120423 - https://www.codeproject.com/Articles/371955/Motion-JPEG-Streaming-Server
+﻿//Project: MjpegStreamer.UWP
+//Filename: MjpegStreamer.cs
 
 using System;
 using System.Collections.Generic;
@@ -9,9 +8,6 @@ using System.Threading.Tasks;
 using System.Threading;
 using Windows.Networking.Sockets;
 using System.IO; //for WindowsRuntimeStreamExtensions - see https://msdn.microsoft.com/en-us/library/system.io.windowsruntimestreamextensions(v=vs.110).aspx 
-
-//using Windows.Networking.Connectivity;
-//using Windows.Networking;
 
 namespace Chantzaras.Media.Streaming.Mjpeg
 {
@@ -30,7 +26,6 @@ namespace Chantzaras.Media.Streaming.Mjpeg
 
         public MjpegStreamer(IEnumerable<SoftwareBitmap> imagesSource)
         {
-
             _Clients = new List<StreamSocket>();
 
             this.ImagesSource = imagesSource;

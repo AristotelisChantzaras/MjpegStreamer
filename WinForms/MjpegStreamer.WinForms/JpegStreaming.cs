@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿//Project: MjpegStreamer.WinForms
+//Filename: JpegStreaming.cs
+
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 

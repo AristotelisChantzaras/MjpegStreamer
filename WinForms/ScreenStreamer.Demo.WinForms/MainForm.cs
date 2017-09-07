@@ -2,8 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 
-using Chantzaras.Media.Capture;
-using Chantzaras.Media.Streaming.Mjpeg;
+using Chantzaras.Media.Streaming.Screencast;
 
 namespace ScreenStreamer
 {
@@ -18,7 +17,7 @@ namespace ScreenStreamer
 
         #region Fields
 
-        private MjpegStreamer _Server;
+        private ScreenCaptureStreamer _Server;
 
         #endregion
 
@@ -36,7 +35,7 @@ namespace ScreenStreamer
 
         public void StartServer()
         {
-            _Server = new MjpegStreamer(ScreenCapture.Snapshots(600, 450, true));
+            _Server = new ScreenCaptureStreamer(600, 450, true);
             _Server.Start(port);
         }
 

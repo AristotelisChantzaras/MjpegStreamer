@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿//Project: MjpegStreamer.UWP
+//Filename: JpegStreaming.cs
+
+using System.Collections.Generic;
 using System.IO;
 using Windows.Graphics.Imaging;
 

@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿//Project: ScreenStreamer (WinForms)
+//Filename: ScreenCapture.cs
+
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -7,11 +11,6 @@ namespace Chantzaras.Media.Capture
 
     static class ScreenCapture
     {
-        // -------------------------------------------------
-        // Developed By : Ragheed Al-Tayeb
-        // e-Mail       : ragheedemail@gmail.com
-        // Date         : April 2012
-        // -------------------------------------------------
 
         public static IEnumerable<Image> Snapshots()
         {
@@ -23,7 +22,7 @@ namespace Chantzaras.Media.Capture
         /// </summary>
         /// <param name="delayTime"></param>
         /// <returns></returns>
-        public static IEnumerable<Image> Snapshots(int width, int height, bool showCursor)
+        public static IEnumerable<Image> Snapshots(int width, int height, bool showCursor, Func<bool> stop=null)
         {
             Size size = new Size(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height);
 
@@ -47,6 +46,17 @@ namespace Chantzaras.Media.Capture
 
             while (true)
             {
+                if ((stop != null) && stop())
+                {
+                    //cleanup
+                    srcGraphics.Dispose();
+                    dstGraphics.Dispose();
+                    srcImage.Dispose();
+                    dstImage.Dispose();
+
+                    yield break;
+                }
+
                 srcGraphics.CopyFromScreen(0, 0, 0, 0, size);
 
                 if (showCursor)
@@ -56,16 +66,8 @@ namespace Chantzaras.Media.Capture
                     dstGraphics.DrawImage(srcImage, dst, src, GraphicsUnit.Pixel);
 
                 yield return dstImage;
-
             }
 
-            srcGraphics.Dispose(); //TODO: Unreachable code (probably need to set some flag and when seen cleanup and exit loop)
-            dstGraphics.Dispose();
-
-            srcImage.Dispose();
-            dstImage.Dispose();
-
-            yield break;
         }
 
     }
