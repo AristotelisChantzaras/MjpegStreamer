@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿//Project: MjpegStreamer.WinForms
+//Filename: MjpegWriter.cs
+
+using System;
 using System.Text;
 using System.IO;
 using System.Drawing;
-
-// -------------------------------------------------
-// Developed By : Ragheed Al-Tayeb
-// e-Mail       : ragheedemail@gmail.com
-// Date         : April 2012
-// -------------------------------------------------
 
 namespace Chantzaras.Media.Streaming.Mjpeg
 {

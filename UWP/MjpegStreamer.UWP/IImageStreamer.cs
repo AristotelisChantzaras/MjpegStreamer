@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Windows.Graphics.Imaging;
+using Windows.Networking.Sockets;
 
 namespace Chantzaras.Media.Streaming.Mjpeg
 {
@@ -7,7 +8,9 @@ namespace Chantzaras.Media.Streaming.Mjpeg
     {
         IEnumerable<SoftwareBitmap> ImagesSource { get; set; }
         int Interval { get; set; }
+
         bool IsRunning { get; }
+        IEnumerable<StreamSocket> Clients { get; }
 
         void Dispose();
         void Start();

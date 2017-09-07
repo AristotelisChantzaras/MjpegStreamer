@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Controls;
 
 using MjpegStreamerTest.uwp;
-using Chantzaras.Media.Streaming.CameraCapture;
+using Chantzaras.Media.Streaming.Cameracast;
 
 namespace CameraStreamer.uwp
 {

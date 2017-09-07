@@ -61,10 +61,6 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -79,7 +75,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenCapture.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -105,6 +100,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ScreenCaptureStreamer.WinForms\ScreenCaptureStreamer.WinForms.csproj">
+      <Project>{7df84e5e-5ab8-4ccf-8f09-bc9c3e66f06f}</Project>
+      <Name>ScreenCaptureStreamer.WinForms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MjpegStreamer.WinForms\MjpegStreamer.WinForms.csproj">
       <Project>{F961A5DF-7AE0-43F3-8CA3-01340D4A815F}</Project>
       <Name>MjpegStreamer.WinForms</Name>

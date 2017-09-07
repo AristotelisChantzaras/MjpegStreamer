@@ -1,5 +1,5 @@
-﻿// Camera.cs
-// Aristotelis Chantzaras (arisxan@hol.gr) - 20170823
+﻿//Project: CameraCaptureStreamer.UWP
+//Filename: CameraCapture.cs
 
 using System.Collections.Generic;
 using Windows.Graphics.Imaging;
@@ -13,7 +13,7 @@ using Windows.UI.Core;
 namespace Chantzaras.Media.Capture
 {
 
-    public static class Camera
+    public static class CameraCapture
     {
         static MediaCapture _mediaCapture;
         static VideoEncodingProperties _previewProperties;
@@ -23,7 +23,7 @@ namespace Chantzaras.Media.Capture
         /// </summary>
         /// <param name="delayTime"></param>
         /// <returns></returns>
-        public static IEnumerable<SoftwareBitmap> Snapshots(CaptureElement previewControl, int width, int height)
+        public static IEnumerable<SoftwareBitmap> Snapshots(CaptureElement previewControl, int width, int height, Func<bool> stop=null)
         {
             _mediaCapture = new MediaCapture();
             _mediaCapture.Failed += _mediaCapture_Failed;
@@ -41,10 +41,11 @@ namespace Chantzaras.Media.Capture
 
             while (true)
             {
+                if ((stop != null) && stop())
+                    yield break;
+
                 yield return CameraImage(previewControl, width, height);
             }
-
-            yield break;
         }
 
         private static void _mediaCapture_Failed(MediaCapture sender, MediaCaptureFailedEventArgs errorEventArgs)

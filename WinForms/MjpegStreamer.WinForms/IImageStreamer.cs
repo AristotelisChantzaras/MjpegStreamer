@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿//Project: MjpegStreamer.WinForms
+//Filename: IImageStreamer.cs
+
+using System.Collections.Generic;
 using System.Drawing;
+using System.Net.Sockets;
 
 namespace Chantzaras.Media.Streaming.Mjpeg
 {
@@ -7,7 +11,9 @@ namespace Chantzaras.Media.Streaming.Mjpeg
     {
         IEnumerable<Image> ImagesSource { get; set; }
         int Interval { get; set; }
+
         bool IsRunning { get; }
+        IEnumerable<Socket> Clients { get; }
 
         void Dispose();
         void Start();
