@@ -42,7 +42,14 @@ namespace Chantzaras.Media.Capture
             while (true)
             {
                 if ((stop != null) && stop())
+                {
+                    //cleanup
+                    _mediaCapture.StopPreviewAsync().GetAwaiter().GetResult();
+                    _mediaCapture = null;
+                    previewControl.Source = null;
+
                     yield break;
+                }
 
                 yield return CameraImage(previewControl, width, height);
             }
