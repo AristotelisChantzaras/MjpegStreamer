@@ -13,7 +13,7 @@ namespace Chantzaras.Media.Streaming.Cameracast
     public class CameraCaptureStreamer : MjpegStreamer
     {
 
-        public CameraCaptureStreamer(CaptureElement previewControl, int width, int height, Func<bool> stop=null) : base((CameraCapture.Snapshots(previewControl, width, height, stop)))
+        public CameraCaptureStreamer(CaptureElement previewControl, int width, int height, Func<bool> stop=null) : base(CameraCapture.Snapshots(previewControl, width, height, stop))
         {
         }
 

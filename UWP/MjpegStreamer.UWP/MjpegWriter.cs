@@ -32,7 +32,7 @@ namespace Chantzaras.Media.Streaming.Mjpeg
 
         }
 
-        public MjpegWriter(Stream stream,string boundary)
+        public MjpegWriter(Stream stream, string boundary)
         {
 
             this.Stream = stream;
@@ -66,14 +66,16 @@ namespace Chantzaras.Media.Streaming.Mjpeg
 
             StringBuilder sb = new StringBuilder();
 
+            //write part header
             sb.AppendLine();
             sb.AppendLine(this.Boundary);
             sb.AppendLine("Content-Type: image/jpeg");
             sb.AppendLine("Content-Length: " + imageStream.Length.ToString());
             sb.AppendLine(); 
-
             Write(sb.ToString());
-            imageStream.WriteTo(this.Stream);
+
+            imageStream.WriteTo(this.Stream); //write image data
+
             Write("\r\n");
             
             this.Stream.Flush();

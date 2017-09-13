@@ -18,7 +18,7 @@ namespace Chantzaras.Media.Streaming.Mjpeg
     /// Provides a streaming server that can be used to stream any images source
     /// to any client.
     /// </summary>
-    public class MjpegStreamer : IDisposable, IImageStreamer
+    public class MjpegStreamer : IImageStreamer, IDisposable
     {
         public const int DEFAULT_INTERVAL = 50;
 
@@ -27,8 +27,8 @@ namespace Chantzaras.Media.Streaming.Mjpeg
 
         public MjpegStreamer(IEnumerable<SoftwareBitmap> imagesSource)
         {
-            this.ImagesSource = imagesSource;
-            this.Interval = DEFAULT_INTERVAL;
+            ImagesSource = imagesSource;
+            Interval = DEFAULT_INTERVAL;
         }
 
         /// <summary>
@@ -55,6 +55,14 @@ namespace Chantzaras.Media.Streaming.Mjpeg
         public bool IsRunning { get; private set; }
 
         /// <summary>
+        /// Starts the server to accepts any new connections on the default port (8080).
+        /// </summary>
+        public void Start()
+        {
+            this.Start(8080);
+        }
+
+        /// <summary>
         /// Starts the server to accepts any new connections on the specified port.
         /// </summary>
         /// <param name="port"></param>
@@ -67,55 +75,33 @@ namespace Chantzaras.Media.Streaming.Mjpeg
 
         }
 
-        /// <summary>
-        /// Starts the server to accepts any new connections on the default port (8080).
-        /// </summary>
-        public void Start()
-        {
-            this.Start(8080);
-        }
-
         public void Stop()
         {
+            if (!IsRunning) return;
 
-            if (IsRunning)
+            try
             {
-                try
-                {
-                    DisposeSocketListener();
-                }
-                finally
-                {
-
-                    lock (_Clients)
-                    {
-
-                        foreach (var s in _Clients)
-                        {
-                            try
-                            {
-                                s.Dispose();
-                            }
-                            catch (Exception e)
-                            {
-                                System.Diagnostics.Debug.WriteLine(e.Message);
-                            }
-                        }
-                        _Clients.Clear();
-                    }
-
-                    IsRunning = false;
-                }
+                DisposeSocketListener();
             }
-        }
-
-        private void DisposeSocketListener()
-        {
-            if (socketListener != null)
+            finally
             {
-                socketListener.CancelIOAsync().GetAwaiter().GetResult();
-                socketListener.Dispose();
-                socketListener = null;
+                lock (_Clients)
+                {
+                    foreach (var s in _Clients)
+                    {
+                        try
+                        {
+                            s.Dispose();
+                        }
+                        catch (Exception e)
+                        {
+                            System.Diagnostics.Debug.WriteLine(e.Message);
+                        }
+                    }
+                    _Clients.Clear();
+                }
+
+                IsRunning = false;
             }
         }
 
@@ -154,10 +140,13 @@ namespace Chantzaras.Media.Streaming.Mjpeg
 
         }
 
+        /// <summary>
+        /// Handles new client connections.
+        /// </summary>
+        /// <param name="client"></param>
         private void SocketListener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
             ActionItem.Schedule(ClientTask, args.Socket);
-
         }
 
         /// <summary>
@@ -166,7 +155,6 @@ namespace Chantzaras.Media.Streaming.Mjpeg
         /// <param name="client"></param>
         private void ClientTask(object client)
         {
-
             StreamSocket socket = (StreamSocket)client;
 
             System.Diagnostics.Debug.WriteLine(string.Format("New client from {0}", socket.Information.RemoteAddress.ToString()));
@@ -207,11 +195,21 @@ namespace Chantzaras.Media.Streaming.Mjpeg
         }
 
 
-        #region IDisposable Members
+        #region Cleanup
 
-        public void Dispose()
+        private void DisposeSocketListener()
         {
-            this.Stop();
+            if (socketListener != null)
+            {
+                socketListener.CancelIOAsync().GetAwaiter().GetResult();
+                socketListener.Dispose();
+                socketListener = null;
+            }
+        }
+
+        public void Dispose() //IDisposable
+        {
+            Stop();
         }
 
         #endregion
