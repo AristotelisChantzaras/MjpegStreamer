@@ -1,6 +1,6 @@
 ﻿//Project: MjpegStreamer.WinForms
 //Filename: MjpegStreamer.cs
-//Version: 20170907
+//Version: 20170913
 
 using System;
 using System.Collections.Generic;
@@ -18,19 +18,17 @@ namespace Chantzaras.Media.Streaming.Mjpeg
     /// </summary>
     public class MjpegStreamer : IDisposable, IImageStreamer
     {
+        public const int DEFAULT_INTERVAL = 50;
 
-        private List<Socket> _Clients;
+        private List<Socket> _Clients = new List<Socket>();
         private Thread _Thread;
 
         public MjpegStreamer(IEnumerable<Image> imagesSource)
         {
-
-            _Clients = new List<Socket>();
             _Thread = null;
 
             this.ImagesSource = imagesSource;
-            this.Interval = 50;
-
+            this.Interval = DEFAULT_INTERVAL;
         }
 
 
@@ -122,17 +120,17 @@ namespace Chantzaras.Media.Streaming.Mjpeg
         /// connections from clients.
         /// </summary>
         /// <param name="state"></param>
-        private void ServerThread(object state)
+        private void ServerThread(object port)
         {
 
             try
             {
                 Socket Server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-                Server.Bind(new IPEndPoint(IPAddress.Any,(int)state));
+                Server.Bind(new IPEndPoint(IPAddress.Any,(int)port));
                 Server.Listen(10);
 
-                System.Diagnostics.Debug.WriteLine(string.Format("Server started on port {0}.", state));
+                System.Diagnostics.Debug.WriteLine(string.Format("Server started on port {0}.", port));
                 
                 foreach (Socket client in Server.IncommingConnections())
                     ThreadPool.QueueUserWorkItem(new WaitCallback(ClientThread), client);
