@@ -1,6 +1,6 @@
 ﻿//Project: MjpegStreamer.UWP
 //Filename: MjpegStreamer.cs
-//Version: 20170907
+//Version: 20170913
 
 using System;
 using System.Collections.Generic;
@@ -20,6 +20,7 @@ namespace Chantzaras.Media.Streaming.Mjpeg
     public class MjpegStreamer : IDisposable, IImageStreamer
     {
         private Task _Task;
+        private StreamSocketListener socketListener;
         private List<StreamSocket> _Clients;
 
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
@@ -125,7 +126,7 @@ namespace Chantzaras.Media.Streaming.Mjpeg
             try
             {
                 //Create a StreamSocketListener to start listening for TCP connections.
-                StreamSocketListener socketListener = new StreamSocketListener();
+                socketListener = new StreamSocketListener();
 
                 //Hook up an event handler to call when connections are received.
                 socketListener.ConnectionReceived += SocketListener_ConnectionReceived;
@@ -141,7 +142,6 @@ namespace Chantzaras.Media.Streaming.Mjpeg
                 System.Diagnostics.Debug.WriteLine(e.Message);
             }
 
-            //this.Stop();
         }
 
         private void SocketListener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
