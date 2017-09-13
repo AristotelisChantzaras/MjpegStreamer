@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Windows.Networking.Sockets;
 using System.IO; //for WindowsRuntimeStreamExtensions - see https://msdn.microsoft.com/en-us/library/system.io.windowsruntimestreamextensions(v=vs.110).aspx 
+using Chantzaras.Tasks;
 
 namespace Chantzaras.Media.Streaming.Mjpeg
 {
@@ -19,17 +20,17 @@ namespace Chantzaras.Media.Streaming.Mjpeg
     /// </summary>
     public class MjpegStreamer : IDisposable, IImageStreamer
     {
+        public const int DEFAULT_INTERVAL = 50;
+
         private Task _Task;
         private StreamSocketListener socketListener;
-        private List<StreamSocket> _Clients;
+        private List<StreamSocket> _Clients = new List<StreamSocket>();
 
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
         private CancellationToken ct;
 
         public MjpegStreamer(IEnumerable<SoftwareBitmap> imagesSource)
         {
-            _Clients = new List<StreamSocket>();
-
             this.ImagesSource = imagesSource;
             this.Interval = 50;
         }
@@ -120,7 +121,7 @@ namespace Chantzaras.Media.Streaming.Mjpeg
         /// connections from clients.
         /// </summary>
         /// <param name="state"></param>
-        private void ServerTask(object state)
+        private void ServerTask(object port)
         {
 
             try
@@ -132,10 +133,10 @@ namespace Chantzaras.Media.Streaming.Mjpeg
                 socketListener.ConnectionReceived += SocketListener_ConnectionReceived;
 
                 //Start listening for incoming TCP connections on the specified port. You can specify any port that's not currently in use.
-                socketListener.BindServiceNameAsync(state.ToString()).GetAwaiter().GetResult();
+                socketListener.BindServiceNameAsync(port.ToString()).GetAwaiter().GetResult();
                 //socketListener.BindServiceNameAsync(state.ToString(), SocketProtectionLevel.PlainSocket, GetIPadapter()).GetAwaiter().GetResult();
 
-                System.Diagnostics.Debug.WriteLine(string.Format("Server started on port {0}.", state));
+                System.Diagnostics.Debug.WriteLine(string.Format("Server started on port {0}.", port));
             }
             catch (Exception e)
             {
@@ -203,15 +204,6 @@ namespace Chantzaras.Media.Streaming.Mjpeg
         }
 
         #endregion
-    }
-
-    static class ActionItem //see https://github.com/dstuckims/azure-relay-dotnet/commit/93777a9f8563bbdacc4b854afd9fb21a968196b9
-    {
-        public static Task Schedule(Action<object> action, object state, bool attachToParent = false)
-        {
-            // UWP doesn't support ThreadPool[.QueueUserWorkItem] so just use Task.Factory.StartNew
-            return Task.Factory.StartNew(s => action(s), state, (attachToParent) ? TaskCreationOptions.AttachedToParent : TaskCreationOptions.DenyChildAttach);
-        }
     }
 
 }
