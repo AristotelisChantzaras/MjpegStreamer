@@ -70,7 +70,8 @@ namespace Chantzaras.Media.Streaming.Mjpeg
         {
             lock (this) //TODO: check if lock is needed
             {
-                ActionItem.Schedule(ServerTask, port);
+                ActionItem.Schedule(ServerTask, port); //New Separate Task. Even if a task is delayed/slowed it will not
+                                                       // affect us cause it runs alongside in a parallel way
             }
 
         }

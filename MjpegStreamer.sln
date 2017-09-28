@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenStreamer.Demo.WinForms", "WinForms\ScreenStreamer.Demo.WinForms\ScreenStreamer.Demo.WinForms.csproj", "{2D41383D-99E1-45B9-AF0A-4F54AE20A46F}"
 EndProject
